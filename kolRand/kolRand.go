@@ -1,6 +1,7 @@
 package kolRand
 
 import (
+	"math"
 	"math/rand"
 	"time"
 )
@@ -11,6 +12,10 @@ type KolRandom struct {
 
 func NewKolRandom() KolRandom {
 	return KolRandom{rand.New(rand.NewSource(time.Now().UnixMicro()))}
+}
+
+func (rnd *KolRandom) makeUniformFloat64() float64 {
+	return rnd.seed.Float64()
 }
 
 //генератор случайных чисел работает только внутри тела функции
@@ -26,6 +31,41 @@ func (rnd *KolRandom) MakeUniform(n int32) uint16 {
 }
 
 func (rnd *KolRandom) MakePoisson(lambda float64) uint16 {
+	var P float64 = 0
+	var counter, uint16Result uint16 = 0, 0
 
-	return uint16(2)
+	for true {
+		if P > lambda {
+			break
+		}
+
+		P = P + float64(rnd.MakeExp(1))
+		counter = counter + 1
+	}
+
+	uint16Result = counter
+	return uint16Result
+}
+
+func (rnd *KolRandom) MakePoissonMultiply(lambda float64) uint16 {
+	var P, newP float64 = rnd.makeUniformFloat64(), 0
+	var counter, uint16Result uint16 = 0, 0
+
+	for true {
+		newP = P * rnd.makeUniformFloat64()
+
+		if newP == 0 {
+			newP = rnd.makeUniformFloat64()
+		}
+
+		if P >= math.Exp(-math.Abs(lambda)) && (newP < math.Exp(-math.Abs(lambda))) {
+			break
+		}
+
+		P = newP
+		counter = counter + 1
+	}
+	uint16Result = counter
+
+	return uint16Result
 }
