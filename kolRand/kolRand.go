@@ -30,6 +30,10 @@ func (rnd *KolRandom) MakeUniform(n int32) uint16 {
 	return uint16(rnd.seed.Int31n(n))
 }
 
+func (rnd *KolRandom) MakeUniformRange(n int32, m int32) uint16 {
+	return uint16((rnd.seed.Int31() % (m - n)) + n)
+}
+
 func (rnd *KolRandom) MakePoisson(lambda float64) uint16 {
 	var P float64 = 0
 	var counter, uint16Result uint16 = 0, 0
