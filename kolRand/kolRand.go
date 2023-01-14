@@ -35,7 +35,7 @@ func (rnd *KolRandom) MakeUniform(n int32) uint16 {
 }
 
 func (rnd *KolRandom) MakeUniformFloatFromZeroToOne(n, m float32) float64 {
-	return (float64(rnd.MakeUniformRange(int32(n)*10, int32(m)*10)) / 10)
+	return (float64(rnd.MakeUniformRange(int32(n*10), int32(m*10))) / 10)
 }
 
 func (rnd *KolRandom) MakeUniformRange(n, m int32) uint16 {
