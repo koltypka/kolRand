@@ -30,7 +30,11 @@ func (rnd *KolRandom) MakeUniform(n int32) uint16 {
 	return uint16(rnd.seed.Int31n(n))
 }
 
-func (rnd *KolRandom) MakeUniformRange(n int32, m int32) uint16 {
+func (rnd *KolRandom) MakeUniformFloatFromZeroToOne(n, m float32) float32 {
+	return (float32(rnd.MakeUniformRange(int32(n)*10, int32(m)*10)) / 10)
+}
+
+func (rnd *KolRandom) MakeUniformRange(n, m int32) uint16 {
 	return uint16((rnd.seed.Int31() % (m - n)) + n)
 }
 
